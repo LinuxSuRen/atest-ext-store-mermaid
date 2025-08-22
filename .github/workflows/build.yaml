@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  - pull_request
+
+jobs:
+  Test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.24.x
+      - uses: actions/checkout@v3.0.0
+      - name: Unit Test
+        run: |
+          make test
+
+  Build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.24.x
+      - uses: actions/checkout@v3.0.0
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: '~> v2'
+          args: release --clean --snapshot
+
+  BuildImage:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.0.0
+      - name: Image
+        run: make build-image

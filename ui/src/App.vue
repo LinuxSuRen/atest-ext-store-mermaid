@@ -30,12 +30,23 @@ const renderChart = async () => {
     console.error('Mermaid rendering error:', error);
   }
 };
+
+const sampleCodeType = ref('flowchart');
+const diagramTypes = ['flowchart', 'sequenceDiagram', 'timeline', 'classDiagram', 'journey', 'mindmap', 'gantt', 'pie', 'kanban'];
+watch(sampleCodeType, async () => {
+  const sampleCode = await fetch('/data/' + sampleCodeType.value + '.txt');
+  code.value = await sampleCode.text();
+});
 </script>
 
 <template>
   <div>
     <el-splitter>
       <el-splitter-panel size="30%">
+        <el-select v-model="sampleCodeType" placeholder="Select diagram type">
+          <el-option v-for="type in diagramTypes" :key="type" :label="type" :value="type">
+          </el-option>
+        </el-select>
         <textarea class="panel" v-model="code" placeholder="Enter Mermaid code here"></textarea>
       </el-splitter-panel>
       <el-splitter-panel :min="200">

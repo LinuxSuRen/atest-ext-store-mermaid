@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import mermaid from 'mermaid';
+import { toPng } from 'html-to-image';
 
 mermaid.initialize({
   startOnLoad: true,
@@ -32,11 +33,27 @@ const renderChart = async () => {
 };
 
 const sampleCodeType = ref('flowchart');
-const diagramTypes = ['flowchart', 'sequenceDiagram', 'timeline', 'classDiagram', 'journey', 'mindmap', 'gantt', 'pie', 'kanban'];
+const diagramTypes = ['flowchart', 'sequenceDiagram', 'timeline', 'classDiagram',
+  'journey', 'mindmap', 'gantt', 'pie', 'kanban', 'gitGraph', 'quadrantChart', 'xychart'];
 watch(sampleCodeType, async () => {
   const sampleCode = await fetch('/data/' + sampleCodeType.value + '.txt');
   code.value = await sampleCode.text();
 });
+
+const exportToPng = async () => {
+  const svgElement = chartContainer.value?.querySelector('svg');
+  if (!svgElement) return;
+
+  try {
+    const dataUrl = await toPng(svgElement as HTMLElement);
+    const link = document.createElement('a');
+    link.download = 'diagram.png';
+    link.href = dataUrl;
+    link.click();
+  } catch (error) {
+    console.error('Export failed:', error);
+  }
+};
 </script>
 
 <template>
@@ -50,6 +67,7 @@ watch(sampleCodeType, async () => {
         <textarea class="panel" v-model="code" placeholder="Enter Mermaid code here"></textarea>
       </el-splitter-panel>
       <el-splitter-panel :min="200">
+        <el-button @click="exportToPng" type="primary" style="margin: 10px;">Export as PNG</el-button>
         <div ref="chartContainer" class="chart"></div>
       </el-splitter-panel>
     </el-splitter>
@@ -59,6 +77,6 @@ watch(sampleCodeType, async () => {
 <style scoped>
 .panel {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 39px);
 }
 </style>

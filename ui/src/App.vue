@@ -58,6 +58,18 @@ const exportToPng = async () => {
     console.error('Export failed:', error);
   }
 };
+
+const zoom = ref(100);
+const xMove = ref(0);
+const yMove = ref(0);
+const svgTransform = () => { 
+  const svgElement = chartContainer.value?.querySelector('svg');
+  if (!svgElement) return;
+  svgElement.style.transform = `translateX(${xMove.value*5}px) translateY(${yMove.value*5}px) scale(${zoom.value/100.0})`;
+}
+watch(zoom, svgTransform)
+watch(xMove, svgTransform)
+watch(yMove, svgTransform)
 </script>
 
 <template>
@@ -73,6 +85,15 @@ const exportToPng = async () => {
       <el-splitter-panel :min="200">
         <el-button @click="exportToPng" type="primary" style="margin: 10px;">Export as PNG</el-button>
         <div ref="chartContainer" class="chart"></div>
+        <div style="display: flex;">
+          <span style="margin-right: 8px;">Zoom:</span><el-slider v-model="zoom" :max="200" />
+        </div>
+        <div style="display: flex;">
+          <span style="margin-right: 8px;">X:</span><el-slider v-model="xMove" />
+        </div>
+        <div style="display: flex;">
+          <span style="margin-right: 8px;">Y:</span><el-slider v-model="yMove" />
+        </div>
       </el-splitter-panel>
     </el-splitter>
   </div>
@@ -82,5 +103,8 @@ const exportToPng = async () => {
 .panel {
   width: 100%;
   height: calc(100vh - 39px);
+}
+.chart {
+  height: calc(100vh - 160px);
 }
 </style>

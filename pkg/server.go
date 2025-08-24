@@ -74,6 +74,14 @@ func (s *mermaidExtension) GetPageOfCSS(ctx context.Context, in *server.SimpleNa
 	return
 }
 
+func (s *mermaidExtension) GetPageOfStatic(ctx context.Context, in *server.SimpleName) (reply *server.CommonResult, err error) {
+	reply = &server.CommonResult{
+		Success: true,
+		Message: ui.GetStaticFile(in.Name),
+	}
+	return
+}
+
 func (s *mermaidExtension) Verify(ctx context.Context, in *server.Empty) (reply *server.ExtensionStatus, err error) {
 	reply = &server.ExtensionStatus{
 		Ready:   true,

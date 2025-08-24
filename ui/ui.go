@@ -1,19 +1,32 @@
 package ui
 
 import (
-	_ "embed"
+	"embed"
+	"path/filepath"
 )
 
-//go:embed dist/atest-ext-store-mermaid.umd.js
-var js string
+//go:embed dist
+var dist embed.FS
 
-//go:embed dist/atest-ext-store-mermaid.css
-var css string
+//go:embed public
+var public embed.FS
 
 func GetJS() string {
-	return js
+	return fileContentOrError(dist, "dist/atest-ext-store-mermaid.umd.js")
 }
 
 func GetCSS() string {
-	return css
+	return fileContentOrError(dist, "dist/atest-ext-store-mermaid.css")
+}
+
+func GetStaticFile(file string) string {
+	return fileContentOrError(public, filepath.Join("public", "data", file))
+}
+
+func fileContentOrError(os embed.FS, path string) string {
+	data, err := os.ReadFile(path)
+	if err == nil {
+		return string(data)
+	}
+	return err.Error()
 }

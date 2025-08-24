@@ -23,7 +23,7 @@ import (
 
 func NewRootCmd() (cmd *cobra.Command) {
 	opt := &option{
-		Extension: ext.NewExtension("orm", "store", 4076),
+		Extension: ext.NewExtension("mermaid", "store", 4076),
 	}
 	cmd = &cobra.Command{
 		Use:  "atest-store-mermaid",

@@ -36,7 +36,11 @@ const sampleCodeType = ref('flowchart');
 const diagramTypes = ['flowchart', 'sequenceDiagram', 'timeline', 'classDiagram',
   'journey', 'mindmap', 'gantt', 'pie', 'kanban', 'gitGraph', 'quadrantChart', 'xychart'];
 watch(sampleCodeType, async () => {
-  const sampleCode = await fetch('/data/' + sampleCodeType.value + '.txt');
+  const sampleCode = await fetch('/data/' + sampleCodeType.value + '.txt', {
+    headers: {
+      'X-Extension-Name': 'mermaid',
+    },
+  });
   code.value = await sampleCode.text();
 });
 

@@ -1,5 +1,5 @@
 build: build-ui
-	go build -o bin/atest-ext-store-mermaid .
+	go build -o bin/atest-store-mermaid .
 build-ui:
 	cd ui && npm i && npm run build-only
 test:
@@ -11,3 +11,5 @@ test:
 build-image:
 	docker build .
 run-e2e: build
+cp:
+	cp bin/atest-store-mermaid ~/.config/atest/bin

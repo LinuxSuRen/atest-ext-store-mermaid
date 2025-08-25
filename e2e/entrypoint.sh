@@ -11,5 +11,3 @@ cmd="atest run -p test-suite.yaml"
 
 echo "start to run testing: $cmd"
 kind=orm $cmd
-
-cat /root/.config/atest/stores.yaml

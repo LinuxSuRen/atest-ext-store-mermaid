@@ -10,6 +10,7 @@ test:
 	go tool cover -func=coverage.out
 build-image:
 	docker build .
-run-e2e: build
+run-e2e:
+	cd e2e && ./start.sh
 cp:
 	cp bin/atest-store-mermaid ~/.config/atest/bin

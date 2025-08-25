@@ -7,13 +7,12 @@ param:
   server: |
     {{default "http://localhost:8080" (env "SERVER")}}
 items:
-- name: CreateStore
+- name: listMenus
   before:
     items:
       - httpReady("{{.param.server}}/healthz", 2400)
   request:
-    api: /api/v1/extension/menus
-    method: POST
+    api: /extension/menus
     body: |
       {
           "data": [

@@ -30,6 +30,6 @@ items:
 - name: getJS
   request:
     api: /extension/pages/mermaid/js
-- name: getJS
+- name: getCSS
   request:
     api: /extension/pages/mermaid/css

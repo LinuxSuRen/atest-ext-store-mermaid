@@ -27,3 +27,9 @@ items:
 - name: getStaticFile
   request:
     api: /extension/pages/mindmap.txt/static
+- name: getJS
+  request:
+    api: /extension/pages/mermaid/js
+- name: getJS
+  request:
+    api: /extension/pages/mermaid/css

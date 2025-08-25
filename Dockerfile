@@ -26,5 +26,6 @@ LABEL org.opencontainers.image.source=https://github.com/linuxsuren/atest-ext-st
 LABEL org.opencontainers.image.description="ORM database Store Extension of the API Testing."
 
 COPY --from=builder /workspace/atest-store-mermaid /usr/local/bin/atest-store-mermaid
+EXPOSE 4076
 
 CMD [ "atest-store-mermaid" ]

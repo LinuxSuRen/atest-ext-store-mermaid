@@ -1,3 +1,8 @@
 flowchart LR
 %% this is a comment A -- text --> B{node}
    A -- text --> B -- text2 --> C
+   click A handleMermaidClick "Click on node A"
+   click B handleMermaidClick "Click on node B"
+   click C handleMermaidClick "Click on node C"
+   classDef clickable fill:#f9f,stroke:#333,stroke-width:2px;
+   class A,B,C clickable

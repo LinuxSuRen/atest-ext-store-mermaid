@@ -2,13 +2,13 @@
 title: Example Git diagram
 ---
 gitGraph
-   commit
-   commit
+   commit id: "1"
+   commit id: "2"
    branch develop
    checkout develop
-   commit
-   commit
+   commit id: "3"
+   commit id: "4"
    checkout main
    merge develop
-   commit
-   commit
+   commit id: "5"
+   commit id: "6"

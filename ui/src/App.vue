@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import mermaid from 'mermaid';
 import { toPng } from 'html-to-image';
 
 mermaid.initialize({
   startOnLoad: true,
+  securityLevel: 'loose',
+  flowchart: { htmlLabels: true },
 });
 
 const chartContainer = ref<HTMLElement | null>(null);
@@ -15,7 +17,13 @@ const saveCode = (c: string) => {
   localStorage.setItem('mermaide.code', c);
 };
 
-const code = ref(getCode() || '');
+const handleMermaidClick = (elementId: string) => {
+  console.log('Mermaid element clicked:', elementId);
+};
+
+(window as any).handleMermaidClick = handleMermaidClick;
+
+const code = ref('');
 watch(code, () => {
   renderChart();
   saveCode(code.value || '');
@@ -25,11 +33,17 @@ const renderChart = async () => {
   if (!chartContainer.value) return;
   
   try {
-    const { svg } = await mermaid.render('mermaid-chart', code.value);
+    chartContainer.value.innerHTML = '';
+    const { svg, bindFunctions } = await mermaid.render('mermaid-chart', code.value);
     chartContainer.value.innerHTML = svg;
+    if (bindFunctions) {
+      bindFunctions(chartContainer.value);
+    }
   } catch (error) {
     console.error('Mermaid rendering error:', error);
   }
+
+  svgTransform();
 };
 
 const sampleCodeType = ref('flowchart');
@@ -60,7 +74,7 @@ const exportToPng = async () => {
 };
 
 const zoom = ref(100);
-const xMove = ref(0);
+const xMove = ref(50);
 const yMove = ref(0);
 const svgTransform = () => { 
   const svgElement = chartContainer.value?.querySelector('svg');
@@ -70,6 +84,10 @@ const svgTransform = () => {
 watch(zoom, svgTransform)
 watch(xMove, svgTransform)
 watch(yMove, svgTransform)
+
+onMounted(() => {
+  code.value = getCode() || '';
+})
 </script>
 
 <template>
